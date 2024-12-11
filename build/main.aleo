@@ -1,4 +1,4 @@
-program nft_battle_4214.aleo;
+program nft_battle_4215.aleo;
 
 record RandomIndex:
     owner as address.private;
@@ -51,7 +51,7 @@ function get_random_number:
     cast self.caller r0 into r1 as RandomIndex.record;
     async get_random_number r0 into r2;
     output r1 as RandomIndex.record;
-    output r2 as nft_battle_4214.aleo/get_random_number.future;
+    output r2 as nft_battle_4215.aleo/get_random_number.future;
 
 finalize get_random_number:
     input r0 as u128.public;
@@ -79,7 +79,7 @@ function mint_nft:
     cast self.caller r5 r7 r9 into r10 as NFT.record;
     async mint_nft r0.index r1 r2 r3 into r11;
     output r10 as NFT.record;
-    output r11 as nft_battle_4214.aleo/mint_nft.future;
+    output r11 as nft_battle_4215.aleo/mint_nft.future;
 
 finalize mint_nft:
     input r0 as u128.public;
@@ -98,7 +98,7 @@ function find_battle:
     cast r1 r2 r0.owner r0.strength r0.speed r0.stamina into r3 as MatchNFT.record;
     async find_battle r2 self.caller into r4;
     output r3 as MatchNFT.record;
-    output r4 as nft_battle_4214.aleo/find_battle.future;
+    output r4 as nft_battle_4215.aleo/find_battle.future;
 
 finalize find_battle:
     input r0 as u128.public;
@@ -132,11 +132,11 @@ function finish_game:
     ternary r6 r0.original_owner r1.original_owner into r7;
     not r5 into r8;
     is.eq r2 1u8 into r9;
-    gt r0.strength r1.strength into r10;
+    gt r0.speed r1.speed into r10;
     ternary r10 r0.original_owner r1.original_owner into r11;
     not r9 into r12;
     is.eq r2 2u8 into r13;
-    gt r0.strength r1.strength into r14;
+    gt r0.stamina r1.stamina into r14;
     ternary r14 r0.original_owner r1.original_owner into r15;
     ternary r13 r15 nft_battle.aleo into r16;
     ternary r9 r11 r16 into r17;
@@ -144,7 +144,7 @@ function finish_game:
     async finish_game r0.match_id r18 r2 into r19;
     output r3 as NFT.record;
     output r4 as NFT.record;
-    output r19 as nft_battle_4214.aleo/finish_game.future;
+    output r19 as nft_battle_4215.aleo/finish_game.future;
 
 finalize finish_game:
     input r0 as u128.public;
@@ -154,6 +154,6 @@ finalize finish_game:
     assert.eq r3.attr_to_battle r2;
     cast true r3.player1 r3.player2 r2 r1 into r4 as MatchData;
     set r4 into match_data[0u128];
-    get current_match_id[0u128] into r5;
+    get.or_use current_match_id[0u128] 0u128 into r5;
     add r5 1u128 into r6;
     set r6 into current_match_id[0u128];
